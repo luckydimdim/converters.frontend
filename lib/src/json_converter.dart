@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'meta_reflector.dart';
 import 'reflector.dart';
 import 'base_converter.dart';
@@ -104,6 +106,6 @@ class JsonConverter extends BaseConverter {
       map[jsonName] = instanceMirror.invokeGetter(declaration.simpleName);
     }
 
-    return map;
+    return JSON.encode(map);
   }
 }
