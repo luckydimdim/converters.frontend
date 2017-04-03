@@ -106,6 +106,11 @@ class JsonConverter extends BaseConverter {
       map[jsonName] = instanceMirror.invokeGetter(declaration.simpleName);
     }
 
-    return JSON.encode(map);
+    return map;
   }
+
+  String toJsonString() {
+    return JSON.encode(toJson());
+  }
+
 }
