@@ -1,6 +1,7 @@
 import 'reflector.dart';
 import 'package:reflectable/reflectable.dart';
 import 'base_converter.dart';
+import 'meta_reflector.dart';
 
 @metareflector
 class MapSettings {
