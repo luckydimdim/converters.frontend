@@ -19,7 +19,7 @@ class Json {
       {this.name: null, this.customSerialization: false, this.exclude: false});
 }
 
-class JsonConverter extends BaseConverter {
+class JsonConverter {
   void _setValue(InstanceMirror instanceMirror, String variableName,
       Type variableType, dynamic jsonValue) {
     if (variableType == double) {
@@ -48,7 +48,7 @@ class JsonConverter extends BaseConverter {
 
     InstanceMirror instanceMirror = reflectable.reflect(this);
 
-    var declarations = BaseConverter.getDeclarations(instanceMirror.type);
+    var declarations = ConverterHelper.getDeclarations(instanceMirror.type);
 
     for (var declaration in declarations.values) {
       if (!(declaration is VariableMirror)) {
@@ -84,7 +84,7 @@ class JsonConverter extends BaseConverter {
 
     InstanceMirror instanceMirror = reflectable.reflect(this);
 
-    var declarations = BaseConverter.getDeclarations(instanceMirror.type);
+    var declarations = ConverterHelper.getDeclarations(instanceMirror.type);
 
     for (var declaration in declarations.values) {
       if (!(declaration is VariableMirror)) {

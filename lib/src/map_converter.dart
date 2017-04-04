@@ -15,7 +15,7 @@ class MapSettings {
   const MapSettings({this.name: null, this.exclude: false});
 }
 
-class MapConverter extends BaseConverter {
+class MapConverter {
   MapSettings getMapSettings(List<Object> metadata) {
     if (metadata == null) return null;
 
@@ -29,7 +29,7 @@ class MapConverter extends BaseConverter {
 
   Map toMap() {
     InstanceMirror instanceMirror = reflectable.reflect(this);
-    var declarations = BaseConverter.getDeclarations(instanceMirror.type);
+    var declarations = ConverterHelper.getDeclarations(instanceMirror.type);
 
     var result = new Map();
 
