@@ -86,11 +86,14 @@ main() {
 
       TestClass testClass =  new TestClass().fromJsonString(str);
 
-      DateTime expectedDt = new DateTime.utc(2017,12,31);
+      DateTime expectedDt = new DateTime.utc(2017,12,31,15,31,02);
 
       expect(testClass.dateTimeField.year, expectedDt.year);
       expect(testClass.dateTimeField.month, expectedDt.month);
       expect(testClass.dateTimeField.day, expectedDt.day);
+      expect(testClass.dateTimeField.hour, expectedDt.hour);
+      expect(testClass.dateTimeField.minute, expectedDt.minute);
+      expect(testClass.dateTimeField.second, expectedDt.second);
       expect(testClass.dateTimeField.timeZoneOffset.inHours, 0);
       expect(testClass.dateTimeField.isUtc, true);
 

@@ -24,17 +24,12 @@ class JsonConverter {
       Type variableType, dynamic jsonValue) {
     if (variableType == double) {
       instanceMirror.invokeSetter(
-          variableName,
-          double.parse(
-              jsonValue.toString()));
-    }
-    else if (variableType == DateTime) {
-      instanceMirror.invokeSetter(
-          variableName,
-          DateTime.parse(
-              jsonValue));
-    }
-    else {
+          variableName, double.parse(jsonValue.toString()));
+    } else if (variableType == DateTime) {
+      DateTime utcTime = DateTime.parse(jsonValue);
+
+      instanceMirror.invokeSetter(variableName, utcTime.toLocal());
+    } else {
       instanceMirror.invokeSetter(variableName, jsonValue);
     }
   }
@@ -75,7 +70,8 @@ class JsonConverter {
       }
 
       if (jsonIsMap && (json as Map).containsKey(jsonName)) {
-        var variableType = (declaration as VariableMirror).reflectedType;
+        Type variableType = (declaration as VariableMirror).reflectedType;
+
         _setValue(instanceMirror, declaration.simpleName, variableType,
             json[jsonName]);
       } else if (!jsonIsMap) {
@@ -110,25 +106,31 @@ class JsonConverter {
         jsonName = jsonSettings.name ?? jsonName; // TODO: сделать красивее
       }
 
-      map[jsonName] = instanceMirror.invokeGetter(declaration.simpleName);
+      // Преобразование времени к универсальному формату
+      dynamic value = instanceMirror.invokeGetter(declaration.simpleName);
+      Type variableType = (declaration as VariableMirror).reflectedType;
+      if (variableType is DateTime) {
+        value = (value as DateTime).toUtc();
+      }
+
+      map[jsonName] = value;
     }
 
     return map;
   }
 
   dynamic _encode(dynamic item) {
-    if(item is DateTime) {
+    if (item is DateTime) {
       return item.toIso8601String();
     }
     return item;
   }
 
   String toJsonString() {
-    return JSON.encode(toJson(),toEncodable: _encode);
+    return JSON.encode(toJson(), toEncodable: _encode);
   }
 
   dynamic fromJsonString(String str) {
     return fromJson(JSON.decode(str));
   }
-
 }
