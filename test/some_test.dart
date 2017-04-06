@@ -6,30 +6,79 @@ import 'package:converters/map_converter.dart';
 import 'package:converters/reflector.dart';
 
 @reflectable
-class S extends Object with JsonConverter {
-  int fieldS;
+class TestClass extends Object with JsonConverter {
+  int intField;
+  double doubleField;
+  DateTime dateTimeField;
 }
 
-@reflectable
-class I extends S {
-  int fieldI;
-}
 
 /**/
 main() {
-  group('test group', () {
+  group('converting', () {
+
     setUp(() {});
 
-    test('some test', () {
-      var i = new I();
+    test('convert to DateTime (full)', () {
 
-      var jsonString = '{"fieldI":1,"fieldS":2}';
+      var testClass = new TestClass();
 
-      var json = JSON.decode(jsonString);
+      testClass.intField = 100;
+      testClass.doubleField = 100.95;
+      testClass.dateTimeField = new DateTime(2017,12,31,23,59,58,100,200);
 
-      i.fromJson(json);
+      var jsonString = testClass.toJsonString();
 
-      expect(false, true);
+      print('full test: ' + jsonString);
+
+      expect(true, true);
     });
+
+    test('convert to DateTime (short)', () {
+
+      var testClass = new TestClass();
+
+      testClass.intField = 100;
+      testClass.doubleField = 100.95;
+      testClass.dateTimeField = new DateTime(2017,12,31);
+
+      var jsonString = testClass.toJsonString();
+
+      print('short test: ' + jsonString);
+
+      expect(true, true);
+    });
+
+    test('convert from DateTime (full)', () {
+
+      var str = '{"intField":100,"doubleField":100.95,"dateTimeField":"2017-12-31T23:59:58.100200"}';
+
+      TestClass testClass =  new TestClass().fromJsonString(str);
+
+      DateTime expectedDt = new DateTime(2017,12,31,23,59,58,100,200);
+
+      expect(testClass.dateTimeField.year, expectedDt.year);
+      expect(testClass.dateTimeField.month, expectedDt.month);
+      expect(testClass.dateTimeField.day, expectedDt.day);
+      expect(testClass.dateTimeField.hour, expectedDt.hour);
+      expect(testClass.dateTimeField.minute, expectedDt.minute);
+      expect(testClass.dateTimeField.second, expectedDt.second);
+      expect(testClass.dateTimeField.millisecond, expectedDt.millisecond);
+      expect(testClass.dateTimeField.microsecond, expectedDt.microsecond);
+    });
+
+    test('convert from DateTime (short)', () {
+
+      var str = '{"intField":100,"doubleField":100.95,"dateTimeField":"2017-12-31T00:00:00.000"}';
+
+      TestClass testClass =  new TestClass().fromJsonString(str);
+
+      DateTime expectedDt = new DateTime(2017,12,31);
+
+      expect(testClass.dateTimeField.year, expectedDt.year);
+      expect(testClass.dateTimeField.month, expectedDt.month);
+      expect(testClass.dateTimeField.day, expectedDt.day);
+    });
+
   });
 }

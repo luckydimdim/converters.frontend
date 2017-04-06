@@ -26,8 +26,15 @@ class JsonConverter {
       instanceMirror.invokeSetter(
           variableName,
           double.parse(
-              jsonValue.toString())); // FIXME: написать нормальный биндер
-    } else {
+              jsonValue.toString()));
+    }
+    else if (variableType == DateTime) {
+      instanceMirror.invokeSetter(
+          variableName,
+          DateTime.parse(
+              jsonValue));
+    }
+    else {
       instanceMirror.invokeSetter(variableName, jsonValue);
     }
   }
@@ -109,8 +116,19 @@ class JsonConverter {
     return map;
   }
 
+  dynamic _encode(dynamic item) {
+    if(item is DateTime) {
+      return item.toIso8601String();
+    }
+    return item;
+  }
+
   String toJsonString() {
-    return JSON.encode(toJson());
+    return JSON.encode(toJson(),toEncodable: _encode);
+  }
+
+  dynamic fromJsonString(String str) {
+    return fromJson(JSON.decode(str));
   }
 
 }
