@@ -109,7 +109,7 @@ class JsonConverter {
       // Преобразование времени к универсальному формату
       dynamic value = instanceMirror.invokeGetter(declaration.simpleName);
       Type variableType = (declaration as VariableMirror).reflectedType;
-      if (variableType is DateTime) {
+      if (variableType == DateTime) {
         value = (value as DateTime).toUtc();
       }
 
