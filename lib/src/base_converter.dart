@@ -2,7 +2,6 @@ import 'reflector.dart';
 import 'package:reflectable/reflectable.dart';
 
 class ConverterHelper {
-
   static bool _isReflectable(ClassMirror classMirror) {
     var reflectorMetadata = classMirror.metadata
         .firstWhere((e) => e.runtimeType == Reflector, orElse: () => null);

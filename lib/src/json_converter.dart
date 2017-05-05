@@ -22,7 +22,6 @@ class Json {
 class JsonConverter {
   void _setValue(InstanceMirror instanceMirror, String variableName,
       Type variableType, dynamic jsonValue) {
-
     if (jsonValue == null) {
       instanceMirror.invokeSetter(variableName, jsonValue);
       return;
@@ -115,7 +114,7 @@ class JsonConverter {
       // Преобразование времени к универсальному формату
       dynamic value = instanceMirror.invokeGetter(declaration.simpleName);
       Type variableType = (declaration as VariableMirror).reflectedType;
-      if (variableType == DateTime) {
+      if (variableType == DateTime && value != null) {
         value = (value as DateTime).toUtc();
       }
 

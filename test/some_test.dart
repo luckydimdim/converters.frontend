@@ -12,20 +12,18 @@ class TestClass extends Object with JsonConverter {
   DateTime dateTimeField;
 }
 
-
 /**/
 main() {
   group('converting', () {
-
     setUp(() {});
 
     test('convert to DateTime (full)', () {
-
       var testClass = new TestClass();
 
       testClass.intField = 100;
       testClass.doubleField = 100.95;
-      testClass.dateTimeField = new DateTime.utc(2017,12,31,23,59,58,100,200);
+      testClass.dateTimeField =
+          new DateTime.utc(2017, 12, 31, 23, 59, 58, 100, 200);
 
       var jsonString = testClass.toJsonString();
 
@@ -35,12 +33,11 @@ main() {
     });
 
     test('convert to DateTime (short)', () {
-
       var testClass = new TestClass();
 
       testClass.intField = 100;
       testClass.doubleField = 100.95;
-      testClass.dateTimeField = new DateTime.utc(2017,12,31);
+      testClass.dateTimeField = new DateTime.utc(2017, 12, 31);
 
       var jsonString = testClass.toJsonString();
 
@@ -50,12 +47,13 @@ main() {
     });
 
     test('convert from DateTime (full)', () {
+      var str =
+          '{"intField":100,"doubleField":100.95,"dateTimeField":"2017-12-31T23:59:58.100200Z"}';
 
-      var str = '{"intField":100,"doubleField":100.95,"dateTimeField":"2017-12-31T23:59:58.100200Z"}';
+      TestClass testClass = new TestClass().fromJsonString(str);
 
-      TestClass testClass =  new TestClass().fromJsonString(str);
-
-      DateTime expectedDt = new DateTime.utc(2017,12,31,23,59,58,100,200);
+      DateTime expectedDt =
+          new DateTime.utc(2017, 12, 31, 23, 59, 58, 100, 200);
 
       expect(testClass.dateTimeField.year, expectedDt.year);
       expect(testClass.dateTimeField.month, expectedDt.month);
@@ -68,12 +66,12 @@ main() {
     });
 
     test('convert from DateTime (short)', () {
+      var str =
+          '{"intField":100,"doubleField":100.95,"dateTimeField":"2017-12-31T00:00:00.000Z"}';
 
-      var str = '{"intField":100,"doubleField":100.95,"dateTimeField":"2017-12-31T00:00:00.000Z"}';
+      TestClass testClass = new TestClass().fromJsonString(str);
 
-      TestClass testClass =  new TestClass().fromJsonString(str);
-
-      DateTime expectedDt = new DateTime.utc(2017,12,31);
+      DateTime expectedDt = new DateTime.utc(2017, 12, 31);
 
       expect(testClass.dateTimeField.year, expectedDt.year);
       expect(testClass.dateTimeField.month, expectedDt.month);
@@ -81,12 +79,12 @@ main() {
     });
 
     test('convert from DateTime (timezone)', () {
+      var str =
+          '{"intField":100,"doubleField":100.95,"dateTimeField":"2017-12-31T12:31:02.680Z"}';
 
-      var str = '{"intField":100,"doubleField":100.95,"dateTimeField":"2017-12-31T12:31:02.680Z"}';
+      TestClass testClass = new TestClass().fromJsonString(str);
 
-      TestClass testClass =  new TestClass().fromJsonString(str);
-
-      DateTime expectedDt = new DateTime.utc(2017,12,31,15,31,02);
+      DateTime expectedDt = new DateTime.utc(2017, 12, 31, 15, 31, 02);
 
       expect(testClass.dateTimeField.year, expectedDt.year);
       expect(testClass.dateTimeField.month, expectedDt.month);
@@ -96,8 +94,6 @@ main() {
       expect(testClass.dateTimeField.second, expectedDt.second);
       expect(testClass.dateTimeField.timeZoneOffset.inHours, 0);
       expect(testClass.dateTimeField.isUtc, true);
-
     });
-
   });
 }
