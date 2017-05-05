@@ -22,6 +22,12 @@ class Json {
 class JsonConverter {
   void _setValue(InstanceMirror instanceMirror, String variableName,
       Type variableType, dynamic jsonValue) {
+
+    if (jsonValue == null) {
+      instanceMirror.invokeSetter(variableName, jsonValue);
+      return;
+    }
+
     if (variableType == double) {
       instanceMirror.invokeSetter(
           variableName, double.parse(jsonValue.toString()));
